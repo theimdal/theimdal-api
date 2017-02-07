@@ -20,7 +20,11 @@ var appConfig = require('./app.configurasjon')(app, bodyParser, mongoose);
 //var installationRoutes = require('./routes/installations')(app, Installation, Deviation, Channel);
 
 app.get('/ping', function(req, res) {
-    res.send('pong!')
+    res.send('pong!');
+});
+
+app.get('/', function(req, res) {
+    res.send('nothing here!');
 });
 
 // Server
