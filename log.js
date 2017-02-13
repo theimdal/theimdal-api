@@ -14,7 +14,7 @@ try {
 var transports = [];
 
 var fileRotateTransport = new winston.transports.DailyRotateFile({
-    filename: 'logs/statistics_service.log',
+    filename: 'logs/theimdal-api.log',
     datePattern: 'yyyy-MM-dd.',
     prepend: true,
     level: process.env.ENV === 'development' ? 'debug' : 'debug'

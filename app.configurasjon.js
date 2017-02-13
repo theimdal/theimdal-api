@@ -1,15 +1,19 @@
-module.exports = function(app, bodyParser, mongoose) {
+module.exports = (app, bodyParser, mongoose) => {
 
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    
-    //mongoose.connect("");
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.text());                                    
+    app.use(bodyParser.json({ type: 'application/json'}));
+
+    if(process.env.DB_CONNECTION) {
+        mongoose.connect(process.env.DB_CONNECTION);
+    } else {
+        mongoose.connect('mongodb://localhost/theimdal');
+    }    
 
     app.set('port', process.env.PORT || 8081);
 
-    app.use(function (req, res, next) {
+    app.use( (req, res, next) => {
 
         var origin = req.headers.origin;
 

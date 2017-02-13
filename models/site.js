@@ -1,11 +1,20 @@
 var mongoose = require('mongoose');
 
-var siteSchema = mongoose.Schema({
-    id: Number,
-    author: String,
-    url: String,
-    category: String,
-    placement: Number
+var SiteSchema = mongoose.Schema({
+    name: { type: String, required: true },
+    author: { type: String, required: true },
+    url: { type: String, required: true },
+    category: { type: String, required: true },
+    placement: { type: Number, required: false },
+    createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Site', siteSchema);
+SiteSchema.pre('save', next => {
+    now = new Date();
+    if(!this.createdAt) {
+        this.createdAt = now;
+    }
+    next();
+});
+
+module.exports = mongoose.model('site', SiteSchema);

@@ -1,34 +1,43 @@
 // 3rd party
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+let express = require('express');
+let app = express();
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
 
 // Logging
-var logger = require('./log.js');
+let logger = require('./log.js');
 
 // Models
-var Site = require('./models/site');
+let Site = require('./models/site');
 
 // Services
-//var installationService =  require('./services/installationService');
+//var siteService =  require('./services/siteService');
 
 // Configuration
-var appConfig = require('./app.configurasjon')(app, bodyParser, mongoose);
+let appConfig = require('./app.configurasjon')(app, bodyParser, mongoose);
 
 // Routes
-//var installationRoutes = require('./routes/installations')(app, Installation, Deviation, Channel);
+let site = require('./routes/sites');
 
-app.get('/ping', function(req, res) {
-    res.send('pong!');
+app.get('/ping', (req, res) => {
+    res.json({message: "pong"});
 });
 
-app.get('/', function(req, res) {
-    res.send('nothing here!');
+app.get('/', (req, res) => {
+    res.json({message: "Welcome to the theimdal API"});
 });
+
+app.route("/site")
+    .get(site.getSites)
+    .post(site.postSite);
+
+app.route("/site/:id")
+    .get(site.getSite)
+    .delete(site.deleteSite)
+    .put(site.updateSite);
 
 // Server
-var server = app.listen(app.get('port'), function () {
+let server = app.listen(app.get('port'), () => {
 
     var host = server.address().address;
     var port = server.address().port;
@@ -36,3 +45,5 @@ var server = app.listen(app.get('port'), function () {
     logger.info("Application listening at http://%s:%s", host, port)
 
 })
+
+module.exports = app; // for testing
